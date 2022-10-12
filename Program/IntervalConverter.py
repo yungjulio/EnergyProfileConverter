@@ -14,15 +14,17 @@ class IntervalConverter:
                 for i in range(0, old_interval):
                     new_data.append(value)
         else:
-            new_value = 0.0
+            new_value = 0
             steps = 0
             start = 0
             end = new_interval
             while(steps < len(data)/int(new_interval)):
-                for i in range(start, end+1):
+                for i in range(start, end):
                     new_value += data[i]
 
-                new_data.append(new_value)
-            start = end+2
-            steps += int(new_interval)
+                new_data.append(new_value/new_interval)
+                start = end
+                end += new_interval
+                steps += 1
+                new_value = 0
         return new_data

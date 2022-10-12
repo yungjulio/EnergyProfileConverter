@@ -25,7 +25,7 @@ import argparse
 # data = json_data['data']
 
 #for now use this
-input_file = '/home/andreas/Documents/FH/Sem1/Software Development 1/Projects/Energy Profile Converter/Input_Files/example.json'
+input_file = '/home/andreas/Documents/FH/Sem1/Software Development 1/Projects/Energy Profile Converter/Input_Files/minutes_1.json'
 json_file = open(input_file)
 json_data = json.load(json_file)
 name = json_data['name']
@@ -33,13 +33,13 @@ interval_in_minutes = json_data['interval_in_minutes']
 unit = json_data['unit']
 data = json_data['data']
 
-output_interval = 1
+output_interval = 15
 output_unit = 'kWh'
 output_filepath = 'sample.json'
 
 converter = IntervalConverter()
 #Changer part
-new_data = converter.minutes_15(data, interval_in_minutes, output_interval)
+new_data = converter.convert(data, interval_in_minutes, output_interval, unit, "kWh")
 print(len(new_data))
 #Json Writer part
 dictionary = {
