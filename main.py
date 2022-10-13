@@ -1,13 +1,13 @@
-from IntervalConverter import IntervalConverter
-from Terminal_Reader import Terminal_Reader
-from UnitConverter import UnitConverter
+from Program.Interval_Converter import Interval_Converter
+from Program.Terminal_Reader import Terminal_Reader
+from Program.Unit_Converter import Unit_Converter
 import sys
 import json
 import argparse
 
 reader = Terminal_Reader()
-interval_converter = IntervalConverter()
-unit_converter = UnitConverter()
+interval_converter = Interval_Converter()
+unit_converter = Unit_Converter()
 
 #Changer part
 data = interval_converter.convert_interval(reader.input_interval, reader.output_interval, reader.input_data)
@@ -27,5 +27,5 @@ dictionary = {
 json_object = json.dumps(dictionary, indent=4)
 
 # Writing to sample.json
-with open("/home/andreas/Documents/FH/Sem1/Software Development 1/Projects/Energy Profile Converter/OutputFiles/sample.json", "w") as outfile:
+with open("OutputFiles/{}".format(reader.output_filepath), "w") as outfile:
     outfile.write(json_object)
