@@ -1,30 +1,26 @@
-import json
-import sys
-import argparse
-    
 class IntervalConverter:
-    def convert(self, data, old_interval_param, new_interval_param, old_unit_param, new_unit_param):
+    def convert_interval(self, param_input_interval, param_output_interval, input_data):
         #1440 mins
-        old_interval = int(old_interval_param)
-        new_interval = int(new_interval_param)
-        new_data = []
+        input_interval = int(param_input_interval)
+        output_interval = int(param_output_interval)
+        output_data = []
         
-        if old_interval > new_interval:
-            for value in data:
-                for i in range(0, old_interval):
-                    new_data.append(value)
+        if input_interval > output_interval:
+            for value in input_data:
+                for i in range(0, input_interval):
+                    output_data.append(value)
         else:
             new_value = 0
             steps = 0
             start = 0
-            end = new_interval
-            while(steps < len(data)/int(new_interval)):
+            end = output_interval
+            while(steps < len(input_data)/int(output_interval)):
                 for i in range(start, end):
-                    new_value += data[i]
+                    new_value += input_data[i]
 
-                new_data.append(new_value/new_interval)
+                output_data.append(new_value/output_interval)
                 start = end
-                end += new_interval
+                end += output_interval
                 steps += 1
                 new_value = 0
-        return new_data
+        return output_data
