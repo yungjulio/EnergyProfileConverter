@@ -19,7 +19,7 @@ class Terminal_Reader:
 
         #Json Reader part
         input_file = input_filepath
-        json_file = open(input_file)
+        json_file = open("Input_Files/{}".format(input_file))
         json_data = json.load(json_file)
         self.json_name = json_data['name']
         self.input_interval = json_data['interval_in_minutes']
