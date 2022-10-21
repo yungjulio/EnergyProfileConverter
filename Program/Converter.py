@@ -55,15 +55,16 @@ class Converter:
 #--------------------------------------------------
     def convert_data_to_base_unit(self, input_unit, data):
         new_data = []
+        print("input_unit = {}".format(input_unit))
 
         if input_unit == 'kWh':
             number = 1
         elif input_unit == 'Wh':
-            number = 1000
+            number = 1/1000
         elif input_unit == 'J':
-            number = 3600000
+            number = 1/3600000
         elif input_unit == 'KJ':
-            number = 3600
+            number = 1/3600
             
         for i in range(len(data)):
             new_data.append(data[i]*number)
@@ -73,17 +74,17 @@ class Converter:
 #--------------------------------------------------
     def convert_data_to_required_unit(self, output_unit, data):
         if output_unit != 'kWh' and output_unit != 'Wh' and output_unit != 'KJ' and output_unit != 'J': raise;
-
+        print("output_unit = {}".format(output_unit))
         new_data = []
 
         if output_unit == 'kWh':
             number = 1
         elif output_unit == 'Wh':
-            number = 1/1000
+            number = 1000
         elif output_unit == 'J':
-            number = 1/3600000
+            number = 3600000
         elif output_unit == 'KJ':
-            number = 1/3600
+            number = 3600
         
         for i in range(len(data)):
             new_data.append(data[i]*number)
@@ -96,19 +97,36 @@ class Converter:
             output_interval != 60 and output_interval != 1440:
             raise;
 
+        print("input_interval = {}{}; output_interval = {}{}".format(type(input_interval), input_interval, type(output_interval), output_interval))
+        print(input_interval < output_interval)
         #Case 1 = input_interval equals output_interval
         if input_interval == output_interval:
             return data
         
-        #Case 2 = input_interval greater than output_interval => duplicate each value
-        elif input_interval > output_interval:
-            new_data = []
-            for value in data:
-                for i in range(0, (input_interval/output_interval)):
-                    new_data.append(value)
-
-        #Case 3 = input_interval lower than output_interval => calculate average
+        #Case 2 = input_interval lower than output_interval => calculate average
         elif input_interval < output_interval:
+            print("input_interval < output_interval")
+            new_data = []
+            decreaseFactor = int(output_interval/input_interval)
+            new_data_size = len(data) / decreaseFactor
+            print("new data size = {}".format(new_data_size))
+            print("decreaseFactor = {}".format(decreaseFactor))
+            start = 0
+            end = decreaseFactor
+
+            for i in range(0, int(new_data_size)):
+                new_value = 0;
+                for i in range(start, end):
+                    new_value = new_value + data[i]
+                
+                new_data.append(new_value/decreaseFactor)
+                start = end
+                end = end + decreaseFactor
+            
+            return new_data
+
+        #Case 3 = input_interval greater than output_interval => duplicate each value
+        elif input_interval > output_interval:
             new_data = []
             increaseFactor = int(output_interval/input_interval)
             new_data_size = len(data) * increaseFactor
