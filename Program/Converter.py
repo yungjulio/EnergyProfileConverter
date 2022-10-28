@@ -35,7 +35,6 @@ class Converter:
         self.input_unit = json_data['unit']
         self.input_data = json_data['data']
 
-
         data_in_base_unit = self.convert_data_to_base_unit(self.input_unit, self.input_data)
 
         try:
@@ -55,7 +54,6 @@ class Converter:
 #--------------------------------------------------
     def convert_data_to_base_unit(self, input_unit, data):
         new_data = []
-        print("input_unit = {}".format(input_unit))
 
         if input_unit == 'kWh':
             number = 1
@@ -74,7 +72,6 @@ class Converter:
 #--------------------------------------------------
     def convert_data_to_required_unit(self, output_unit, data):
         if output_unit != 'kWh' and output_unit != 'Wh' and output_unit != 'KJ' and output_unit != 'J': raise;
-        print("output_unit = {}".format(output_unit))
         new_data = []
 
         if output_unit == 'kWh':
@@ -97,24 +94,19 @@ class Converter:
             output_interval != 60 and output_interval != 1440:
             raise;
 
-        print("input_interval = {}{}; output_interval = {}{}".format(type(input_interval), input_interval, type(output_interval), output_interval))
-        print(input_interval < output_interval)
         #Case 1 = input_interval equals output_interval
         if input_interval == output_interval:
             return data
         
         #Case 2 = input_interval lower than output_interval => calculate average
         elif input_interval < output_interval:
-            print("input_interval < output_interval")
             new_data = []
             decreaseFactor = int(output_interval/input_interval)
             new_data_size = len(data) / decreaseFactor
-            print("new data size = {}".format(new_data_size))
-            print("decreaseFactor = {}".format(decreaseFactor))
             start = 0
             end = decreaseFactor
 
-            for i in range(0, int(new_data_size)):
+            for j in range(0, int(new_data_size)):
                 new_value = 0;
                 for i in range(start, end):
                     new_value = new_value + data[i]
@@ -128,8 +120,9 @@ class Converter:
         #Case 3 = input_interval greater than output_interval => duplicate each value
         elif input_interval > output_interval:
             new_data = []
-            increaseFactor = int(output_interval/input_interval)
+            increaseFactor = int(input_interval/output_interval)
             new_data_size = len(data) * increaseFactor
+
             for i in range(0, new_data_size):
                 new_data.append(data[int(i/increaseFactor)])
 
